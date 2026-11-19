@@ -16,7 +16,7 @@ header {
 }
 
 body {
-    font-family: system-ui, times new roman, sans-serif;
+    font-family: roboto, sans-serif;
     margin: 0;
     background: #f7f5ef;
     color: #222;
@@ -74,13 +74,13 @@ ul {
 }
 
 a {
-    color: rgb(53, 53, 53);             /* black instead of blue/purple */
-    text-decoration: none;    /* removes the underline */
+    color: rgb(53, 53, 53);
+    text-decoration: none;
 }
 
 a:hover {
     color: #8d8d8d;
-    cursor: pointer;          /* the hand cursor when hovering */
+    cursor: pointer;
 }
 
 button {
@@ -141,10 +141,10 @@ button:hover {
 
 .nutrition-fact {
     display: grid;
-    grid-template-columns: auto auto;   /* column 1: labels, column 2: boxes */
-    justify-content: start;             /* keep it tight on the left */
+    grid-template-columns: auto auto;
+    justify-content: start;
     align-items: center;
-    gap: 6px 12px;                      /* 6px between rows, 12px between columns */
+    gap: 6px 12px;
     font-weight: bold;
 }
 
@@ -153,15 +153,7 @@ button:hover {
     border-radius: 6px;
     padding: 2px 8px;
     background-color: #f5f5f5;
-    text-align: right;                  /* numbers line up on the right */
-}
-
-.results {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin: 1.5rem 0;
-    align-items: center;
+    text-align: right;
 }
 
 #chartBox {
