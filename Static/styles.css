@@ -1,0 +1,180 @@
+header {
+    background: #2e8b57;
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.stat-box {
+    background: #2e8b57;
+    color: white;
+    padding: 0.1rem 1.5rem;
+    border-radius: 6px;
+    display: inline-block;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+body {
+    font-family: system-ui, times new roman, sans-serif;
+    margin: 0;
+    background: #f7f5ef;
+    color: #222;
+    line-height: 1.5;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav a {
+    color: white;
+    margin: 0 0.75rem;
+}
+
+.search-box {
+    background: rgb(255, 255, 255);
+    border-color: black;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    max-width: 80%;
+}
+
+input, select {
+    background: #e2e2e2;
+    color: #333;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #5b5b5b;
+    margin-right: 0.5rem;
+}
+
+.reset-link {
+    color: #2e8b57;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-left: 1rem;
+}
+
+img {
+    max-width: 20%;
+    position: absolute; 
+    top: 10%; 
+    right: 1%;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+a {
+    color: rgb(53, 53, 53);             /* black instead of blue/purple */
+    text-decoration: none;    /* removes the underline */
+}
+
+a:hover {
+    color: #8d8d8d;
+    cursor: pointer;          /* the hand cursor when hovering */
+}
+
+button {
+    background: #2e8b57;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 1px solid #2e8b57;
+}
+
+button:hover {
+    background: #246e45;
+}
+
+.id-box {
+    background: rgb(255, 255, 255);
+    border-color: black;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    max-width: 80%;
+    display: flex;
+    justify-content: space-between;   /* stats far left, chart far right */
+    align-items: flex-start;          /* both start at the top, not the middle */
+}
+
+.id-card-title {
+    margin: 0;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    font-style: italic;
+}
+
+.id-card-subtitle {
+    margin: 0 0 1rem 0;
+}
+
+.list-title {
+    margin: 0 0 0.5rem 0;
+}
+
+.nutrition-fact {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    align-items: center;
+    gap: 6px 12px;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.nutrition-fact {
+    display: grid;
+    grid-template-columns: auto auto;   /* column 1: labels, column 2: boxes */
+    justify-content: start;             /* keep it tight on the left */
+    align-items: center;
+    gap: 6px 12px;                      /* 6px between rows, 12px between columns */
+    font-weight: bold;
+}
+
+.num {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 2px 8px;
+    background-color: #f5f5f5;
+    text-align: right;                  /* numbers line up on the right */
+}
+
+.results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 1.5rem 0;
+    align-items: center;
+}
+
+#chartBox {
+    flex: 1;
+    max-width: 50%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+}
