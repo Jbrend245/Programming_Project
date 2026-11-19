@@ -3,51 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>Food Investigator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Food Investigator</h1>
-    <p>Type a food to see what's inside 100 g of it.</p>
+    <header>
+        <h1>Food Investigator</h1>
+    </header>
 
-    <!-- The form sends the boxes to Python as ?food=...&weight=... -->
-    <form action="/">
-        <input name="food" placeholder="e.g. banana" value="{{ term }}">
-        <input name="weight" type="number" placeholder="your weight in kg" value="{{ weight }}">
-        <button>Investigate</button>
-    </form>
+    <section class="search-box">
+        <div class="stat-box">
+            <h3>400+ <br> Foods</h3>
+        </div>
+        <div class="stat-box">
+            <h3>6 <br> Nutrients</h3>
+        </div>
+        <div class="stat-box">
+            <h3>Weight <br> Calibrated</h3>
+        </div>
+        <div>  
+            <h2>Welcome to the Food investigator! </h2>
+            <p>I am Inspector Carrot here to help you understand what nutrients your body needs. Use the search tool below to investigate the nutritional content of any food. You can also enter your weight to see how much of each nutrient you need in a day. Click on a food from the list to see its nutritional information and how it fits into your daily needs.</p>
+        </div>
+    </section>
 
-    <!-- The stats of the clicked food -->
-    {% if chosen %}
-        <p>
-            <b>{{ chosen.description }}</b><br>
-            In 100 g you get:<br>
-            Protein: {{ nutrients.protein }} g<br>
-            Carbs: {{ nutrients.carbs }} g<br>
-            Sugars: {{ nutrients.sugars }} g<br>
-            Fat: {{ nutrients.fat }} g<br>
-            Fibre: {{ nutrients.fiber }} g<br>
-            Energy: {{ nutrients.energy }} kcal
-        </p>
+    <section class="search-box">
+        <h2>Investigate the nutritional content of any food!</h2>
+
+        <!-- The form sends the boxes to Python as ?food=...&weight=... -->
+        <form action="/">
+            <input name="food" placeholder="e.g. banana" value="{{ term }}">
+            <input name="weight" type="number" placeholder="your weight in kg" value="{{ weight }}">
+            <button>Investigate</button>
+            <a class="reset-link" href="{{ url_for('index') }}">Reset</a>
+        </form>
+
+        <img src="{{ url_for('static', filename='inspector_carrot.png') }}" alt="Inspector Carrot">
+
+        <ul>
+            {% for food in foods %}
+                <li>
+                    <a href="{{ url_for('index', food=term, weight=weight, pick=loop.index0, _anchor='id-box') }}">
+                        {{ food.description }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </section>
+
+    <section class="id-box" id="id-box">
 
         <div>
+            <!-- The stats of the clicked food -->
+            {% if chosen %}
+
+            <h5 class="id-card-title">Name</h5>
+            <h1 class="id-card-subtitle">{{ chosen.description }}</h1>
+
+            <h3 class="list-title">In 100 g you get:</h3>
+            <div class="nutrition-fact">
+                <span>Protein:</span> <span class="num">{{ nutrients.protein }} g</span>
+                <span>Carbs:</span>   <span class="num">{{ nutrients.carbs }} g</span>
+                <span>Sugars:</span>  <span class="num">{{ nutrients.sugars }} g</span>
+                <span>Fat:</span>     <span class="num">{{ nutrients.fat }} g</span>
+                <span>Fibre:</span>   <span class="num">{{ nutrients.fiber }} g</span>
+                <span>Energy:</span>  <span class="num">{{ nutrients.energy }} kcal</span>
+            </div>
+
+            <h5 class="id-card-title">Food ID</h5>
+            <h3 class="id-card-subtitle">{{ chosen.fdcId }}</h3>
+
+            <h5 class="id-card-title">Food Category</h5>
+            <h3 class="id-card-subtitle">{{ chosen.foodCategory }}</h3>
+
+            <h5 class="id-card-title">Date of birth (aka date published)</h5>
+            <h3 class="id-card-subtitle">{{ chosen.publishedDate }}</h3>
+
+            {% endif %}
+        </div>
+
+        <!-- The list of foods USDA found; each one is a link that sends ?pick=its number -->
+        {% if term and not foods %}
+            <p>No foods found (or the API key is wrong).</p>
+        {% endif %}
+
+        <div id="chartBox">
             <canvas id="hexChart"></canvas>
         </div>
-    {% endif %}
 
-    <!-- The list of foods USDA found; each one is a link that sends ?pick=its number -->
-    {% if term and not foods %}
-        <p>No foods found (or the API key is wrong).</p>
-    {% endif %}
+    </section>
 
-    <ul>
-        {% for food in foods %}
-            <li>
-                <a href="{{ url_for('index', food=term, weight=weight, pick=loop.index0) }}">
-                    {{ food.description }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+    <footer>
+        <p>
+            Powered by <a href="https://fdc.nal.usda.gov/food-search?type=Branded&query=">USDA Nutrition Values</a>
+        </p>
+    </footer>
 
     <!-- JavaScript only draws the hexagon, using the percentages Python worked out -->
     {% if percents %}
@@ -74,7 +125,7 @@
                 ]
             },
             options: {
-                scales: { r: { min: 0, suggestedMax: 150 } }
+                scales: { r: { min: 0, suggestedMax: 100 } }
             }
         });
     </script>
