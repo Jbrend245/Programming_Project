@@ -55,32 +55,28 @@
     <section class="id-box" id="id-box">
 
         <div>
-            <!-- The stats of the clicked food -->
-            {% if chosen %}
-
+            <!-- The ID card: shows -- until a food is clicked -->
             <h5 class="id-card-title">Name</h5>
-            <h1 class="id-card-subtitle">{{ chosen.description }}</h1>
+            <h1 class="id-card-subtitle">{{ chosen.description | default("--") }}</h1>
 
             <h3 class="list-title">In 100 g you get:</h3>
             <div class="nutrition-fact">
-                <span>Protein:</span> <span class="num">{{ nutrients.protein }} g</span>
-                <span>Carbs:</span>   <span class="num">{{ nutrients.carbs }} g</span>
-                <span>Sugars:</span>  <span class="num">{{ nutrients.sugars }} g</span>
-                <span>Fat:</span>     <span class="num">{{ nutrients.fat }} g</span>
-                <span>Fibre:</span>   <span class="num">{{ nutrients.fiber }} g</span>
-                <span>Energy:</span>  <span class="num">{{ nutrients.energy }} kcal</span>
+                <span>Protein:</span> <span class="num">{{ nutrients.protein | default("--") }} g</span>
+                <span>Carbs:</span>   <span class="num">{{ nutrients.carbs | default("--") }} g</span>
+                <span>Sugars:</span>  <span class="num">{{ nutrients.sugars | default("--") }} g</span>
+                <span>Fat:</span>     <span class="num">{{ nutrients.fat | default("--") }} g</span>
+                <span>Fibre:</span>   <span class="num">{{ nutrients.fiber | default("--") }} g</span>
+                <span>Energy:</span>  <span class="num">{{ nutrients.energy | default("--") }} kcal</span>
             </div>
 
             <h5 class="id-card-title">Food ID</h5>
-            <h3 class="id-card-subtitle">{{ chosen.fdcId }}</h3>
+            <h3 class="id-card-subtitle">{{ chosen.fdcId | default("--") }}</h3>
 
             <h5 class="id-card-title">Food Category</h5>
-            <h3 class="id-card-subtitle">{{ chosen.foodCategory }}</h3>
+            <h3 class="id-card-subtitle">{{ chosen.foodCategory | default("--") }}</h3>
 
             <h5 class="id-card-title">Date of birth (aka date published)</h5>
-            <h3 class="id-card-subtitle">{{ chosen.publishedDate }}</h3>
-
-            {% endif %}
+            <h3 class="id-card-subtitle">{{ chosen.publishedDate | default("--") }}</h3>
         </div>
 
         <!-- The list of foods USDA found; each one is a link that sends ?pick=its number -->
@@ -96,15 +92,13 @@
 
     <footer>
         <p>
-            Powered by <a href="https://fdc.nal.usda.gov/food-search?type=Branded&query=">USDA Nutrition Values</a>
+            Powered by <a href="https://fdc.nal.usda.gov/food-search?type=Branded&query=" target="_blank" rel="noopener">USDA Nutrition Values ↗</a>
         </p>
     </footer>
 
     <!-- JavaScript only draws the hexagon, using the percentages Python worked out -->
-    {% if percents %}
     <script>
-        const percents = {{ percents | tojson }};
-
+        const percents = {{ (percents or [0, 0, 0, 0, 0, 0]) | tojson }};
         new Chart(document.getElementById("hexChart"), {
             type: "radar",
             data: {
@@ -129,7 +123,6 @@
             }
         });
     </script>
-    {% endif %}
 
 </body>
 </html>
