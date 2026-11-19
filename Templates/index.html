@@ -2,48 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Investigator</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <h1> The Food Investigator</h1>
-        <h2></h2>
-        <p> This website is your personal nutrition tool</p>
-    </header>
+    <h1>Food Investigator</h1>
+    <p>Type a food to see what's inside 100 g of it.</p>
 
-    <main>
-        <section id="About">
-            <h2>About Us</h2>
-            <p> bla bla</p>
-        </section>
+    <!-- The form sends the boxes to Python as ?food=...&weight=... -->
+    <form action="/">
+        <input name="food" placeholder="e.g. banana" value="{{ term }}">
+        <input name="weight" type="number" placeholder="your weight in kg" value="{{ weight }}">
+        <button>Investigate</button>
+    </form>
 
-        <section id="Nutrition Info">
-            <h2>What is a balanced meal?</h2>
-            <p>bla bla</p>
-        </section>
+    <!-- The stats of the clicked food -->
+    {% if chosen %}
+        <p>
+            <b>{{ chosen.description }}</b><br>
+            In 100 g you get:<br>
+            Protein: {{ nutrients.protein }} g<br>
+            Carbs: {{ nutrients.carbs }} g<br>
+            Sugars: {{ nutrients.sugars }} g<br>
+            Fat: {{ nutrients.fat }} g<br>
+            Fibre: {{ nutrients.fiber }} g<br>
+            Energy: {{ nutrients.energy }} kcal
+        </p>
 
-        <section id="table"> 
-            <h2>Catalogue of Foodstuffs</h2>
-            <p> Explore different foods, products and their nutritive properties</p>
+        <div>
+            <canvas id="hexChart"></canvas>
+        </div>
+    {% endif %}
 
-        </section>
+    <!-- The list of foods USDA found; each one is a link that sends ?pick=its number -->
+    {% if term and not foods %}
+        <p>No foods found (or the API key is wrong).</p>
+    {% endif %}
 
-        <section id="Visualisation Tool"> 
-            <h2>Comparison Tool</h2>
-
-        </section>
-
-        <footer>
-            <p> 
-                Data Source: 
-                <a href="link">
-                    USDA Nutrition Values
+    <ul>
+        {% for food in foods %}
+            <li>
+                <a href="{{ url_for('index', food=term, weight=weight, pick=loop.index0) }}">
+                    {{ food.description }}
                 </a>
-            </p>
-        </footer>
-    </main>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- JavaScript only draws the hexagon, using the percentages Python worked out -->
+    {% if percents %}
+    <script>
+        const percents = {{ percents | tojson }};
+
+        new Chart(document.getElementById("hexChart"), {
+            type: "radar",
+            data: {
+                labels: ["Protein", "Carbs", "Sugars", "Fat", "Fibre", "Energy"],
+                datasets: [
+                    {
+                        label: "100 g of this food (% of a meal's target)",
+                        data: percents,
+                        fill: true
+                    },
+                    {
+                        label: "Target",
+                        data: [100, 100, 100, 100, 100, 100],
+                        fill: false,
+                        borderDash: [5, 5],
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                scales: { r: { min: 0, suggestedMax: 150 } }
+            }
+        });
+    </script>
+    {% endif %}
+
 </body>
 </html>
